@@ -28,7 +28,11 @@ footer, header, hgroup, menu, nav, section {
 }
 body {
   line-height: 1;
-  display: flex;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex; 
   overflow: hidden;
 }
 ol, ul {
@@ -53,7 +57,12 @@ table {
   display: -ms-flexbox;
   display: -webkit-flex;
   display: flex;  
-  flex: 1;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1; 
   -webkit-flex-flow: row wrap;
   flex-flow: row wrap;
 }
@@ -62,7 +71,12 @@ table {
   font-family: 'Josefin Slab', serif;
   background-color: #7a0909;
   background-image: url('../img/noise.png');
-  flex: 0 100%;
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1; 
   align-self: flex-start;
   z-index: 1;
   height: 76px;
@@ -91,6 +105,7 @@ table {
 }
 
 #collection {
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   order: 2;
   background-color: #382924;
@@ -98,9 +113,19 @@ table {
 }
 
 #collection-photos {
-  display: flex;
-  flex: 0 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex; 
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1; 
   align-self: flex-start;
+  -webkit-flex-wrap: wrap;
   flex-wrap: wrap;
   justify-content: center;
   align-content: flex-start;
@@ -116,17 +141,30 @@ table {
  }
 
 .aside {
-  flex: 0 100%;
-
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex; 
+  -webkit-box-flex: 1;
+  -moz-box-flex: 1;
+  width: 100%;
+  -webkit-flex: 1;
+  -ms-flex: 1;
+  flex: 1; 
   height: 50vh;
-  display: flex;
 }
 
 @media all and (min-width: 600px) {
 
   .aside {
     height: 100vh;
-    flex: 1 50%;
+    -webkit-box-flex: 1;
+    -moz-box-flex: 1;
+    width: 50%;
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1; 
   }
 
   #collection-photos {
