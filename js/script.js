@@ -18,7 +18,7 @@ function loadJson(file, callback) {
 	r.send();
 }
 
-function addImagesFromGeoJsonToMap(geojson, map, callback) {
+function addImagesFromGeoJsonToMap(collection, geojson, map, callback) {
 	var layer = L.mapbox.featureLayer().addTo(map);
 	layer.setGeoJSON(geojson).addTo(map);
 
@@ -30,7 +30,7 @@ function addImagesFromGeoJsonToMap(geojson, map, callback) {
   showExistingPhotosFromLayer(collection, map, layer);
 }
 
-function addImagesFromInstagramJsonToMap(instagramjson, map, callback) {
+function addImagesFromInstagramJsonToMap(collection, instagramjson, map, callback) {
 	var layer = L.mapbox.featureLayer().addTo(map);
 	var features = _.map(instagramjson.data, function (feature) {
 		
@@ -126,16 +126,18 @@ function addImageToCollection(collection, src, title, caption) {
 
 window.onload = function(){
   loadMap(L, function (_L, map) {
+		var collection = document.getElementById(COLLECTION_ID);
+
 		loadJson(GEOJSON_FILENAME, function (geojson) {
-	  	addImagesFromGeoJsonToMap(geojson, map);
+	  	addImagesFromGeoJsonToMap(collection, geojson, map);
 		});
+
 		loadJson(INSTAGRAM_FILENAME, function (instagramjson) {
-	  	addImagesFromInstagramJsonToMap(instagramjson, map);
+	  	addImagesFromInstagramJsonToMap(collection, instagramjson, map);
 		});
 
 		map.on('move', function(e) {
 			var layers = e.target._layers;
-			var collection = document.getElementById(COLLECTION_ID);
 			showExistingPhotos(collection, map, layers);
 		});
 	});
