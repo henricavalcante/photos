@@ -1,16 +1,14 @@
-var INSTAGRAM_CLIENT_ID = '40a232e922d749259d878fdd4161deb0';
-var INSTAGRAM_USER_ID = '32644002';
+var INSTAGRAM_FILENAME = 'instagram-data.json';
 var GEOJSON_FILENAME = 'photos.geojson';
-var MAP_LAYER;
+var COLLECTION_ID = 'collection-photos';
 
 function loadMap(_L, callback) {
 	_L.mapbox.accessToken = 'pk.eyJ1IjoiaGVucmljYXZhbGNhbnRlIiwiYSI6InRDOE8tLWcifQ.JkJBQ2DXdKocb-3F7Q0tmQ';
 	var map = _L.mapbox.map('map', 'henricavalcante.m67go40h').setView([0, 0], 2);
-	MAP_LAYER = L.mapbox.featureLayer().addTo(map);
 	callback(_L,map);
 }
 
-function loadJson(_L, map, file, callback) {
+function loadJson(file, callback) {
 	var r = new XMLHttpRequest();
 	r.open("get", file, true);
 	r.onreadystatechange = function () {
@@ -20,51 +18,98 @@ function loadJson(_L, map, file, callback) {
 	r.send();
 }
 
-function addImagesFromGeoJsonToMap(layer, geojson, map, callback) {
-	layer.setGeoJSON(geojson, {
-		style: function (feature) {
-			return {color: feature.properties.color};
-		},
-		onEachFeature: function (feature, layer) {
-			console.log(feature);
-			var photo = feature.properties.photo;
-			if (photo) {
-				addImageToCollection(photo.src, photo.title, photo.caption);
-			}
-			layer.bindPopup(feature.properties.name);
-		}
-	}).addTo(map);
+function addImagesFromGeoJsonToMap(geojson, map, callback) {
+	var layer = L.mapbox.featureLayer().addTo(map);
+	layer.setGeoJSON(geojson).addTo(map);
 
 	layer.eachLayer(function(marker) {
 		var properties = marker.feature.properties;
-		marker.bindPopup(properties.name);
+		marker.bindPopup(properties.photo.title);
   });
 
-  showExistingPhotos(map, layer);
+  showExistingPhotosFromLayer(collection, map, layer);
 }
 
-function showExistingPhotos(map, layer) {
-	clearImagesOfCollection();
+function addImagesFromInstagramJsonToMap(instagramjson, map, callback) {
+	var layer = L.mapbox.featureLayer().addTo(map);
+	var features = _.map(instagramjson.data, function (feature) {
+		
+		if (feature.location === null) return null;
+
+		var caption = '';
+		if (feature.caption) {
+			caption = feature.caption.text;
+		}
+		return {
+      type: 'Feature',
+      geometry: {
+          type: 'Point',
+          coordinates: [feature.location.longitude, feature.location.latitude]
+      },
+      properties: {
+        'marker-color': '#7a0909',
+        'marker-size': 'small',
+        'marker-symbol': 'square',
+        'photo': {
+          'src': feature.images.standard_resolution.url,
+          'title': caption,
+          'caption': feature.tags.join(', ')
+        }
+      }
+    };
+	});
+
+	features = _.filter(features, function (feature) {
+		return !!feature;
+	});
+
+	layer.setGeoJSON({
+	    type: 'FeatureCollection',
+	    features: features
+	});
+
+	layer.eachLayer(function(marker) {
+		var properties = marker.feature.properties;
+		marker.bindPopup(properties.photo.title);
+  });
+
+  showExistingPhotosFromLayer(collection, map, layer);
+	
+}
+
+function showExistingPhotosFromLayer(collection, map, layer) {
 	var bounds = map.getBounds();
 
 	layer.eachLayer(function(marker) {
-      if (bounds.contains(marker.getLatLng())) {
-        var photo = marker.feature.properties.photo;
-				if (photo) {
-					addImageToCollection(photo);
-				}
-      }
+    if (bounds.contains(marker.getLatLng())) {
+      var photo = marker.feature.properties.photo;
+			if (photo) {
+				addImageToCollection(collection, photo);
+			}
+    }
   });
 }
 
-function clearImagesOfCollection(callback) {
-	document.getElementById('collection-photos').innerHTML = '';
+function showExistingPhotos(collection, map, layers) {
+	clearImagesOfCollection(collection, function () {
+		for (var property in layers) {
+		  if (layers.hasOwnProperty(property)) {
+		    if (layers[property]._geojson) {
+					showExistingPhotosFromLayer(collection, map, layers[property]);
+		    }
+		  }
+		}
+	});
+}
+
+function clearImagesOfCollection(collection, callback) {
+	collection.innerHTML = '';
 	if (typeof(callback) === 'function') {
 		callback();
 	}
 }
 
-function addImageToCollection(src, title, caption) {
+function addImageToCollection(collection, src, title, caption) {
 	if (typeof(src) === 'object') {
 		caption = src.caption;
 		title = src.title;
@@ -75,18 +120,23 @@ function addImageToCollection(src, title, caption) {
 	img.setAttribute('data-title', title);
 	img.setAttribute('data-caption', caption);
 	img.setAttribute('class', 'images');
-	document.getElementById('collection-photos').appendChild(img);
+	collection.appendChild(img);
 	Intense(img);
 }
 
 window.onload = function(){
   loadMap(L, function (_L, map) {
-		loadJson(_L, map, GEOJSON_FILENAME, function (geojson) {
-	  	addImagesFromGeoJsonToMap(MAP_LAYER, geojson, map);
+		loadJson(GEOJSON_FILENAME, function (geojson) {
+	  	addImagesFromGeoJsonToMap(geojson, map);
+		});
+		loadJson(INSTAGRAM_FILENAME, function (instagramjson) {
+	  	addImagesFromInstagramJsonToMap(instagramjson, map);
 		});
 
 		map.on('move', function(e) {
-			showExistingPhotos(map, MAP_LAYER);
+			var layers = e.target._layers;
+			var collection = document.getElementById(COLLECTION_ID);
+			showExistingPhotos(collection, map, layers);
 		});
 	});
 };

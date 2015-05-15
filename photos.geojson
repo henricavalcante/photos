@@ -7,130 +7,17 @@
         "marker-color": "#7a0909",
         "marker-size": "small",
         "marker-symbol": "airport",
-        "name": "Rio Grande do Norte",
         "photo": {
           "src": "photos/sd.jpg",
-          "title": "teste",
-          "caption": "teste 2"
+          "title": "SeaWorld",
+          "caption": "Let's fly."
         }
       },
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -36.6064453125,
-          -5.7908968128719565
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "marker-color": "7a0909",
-        "marker-size": "small",
-        "marker-symbol": "airport",
-        "name": "Ceará"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -39.48486328125,
-          -5.04717073691972
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "marker-color": "7a0909",
-        "marker-size": "small",
-        "marker-symbol": "airport",
-        "name": "Paraíba"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -36.7822265625,
-          -7.275292336372158
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "marker-color": "7a0909",
-        "marker-size": "small",
-        "marker-symbol": "airport",
-        "name": "Pernambuco"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -37.94677734374999,
-          -8.363692651835823
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "marker-color": "7a0909",
-        "marker-size": "small",
-        "marker-symbol": "airport",
-        "name": "Alagoas"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -36.49658203124999,
-          -9.64407696490791
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "marker-color": "7a0909",
-        "marker-size": "small",
-        "marker-symbol": "airport",
-        "name": "Bahia"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -41.7041015625,
-          -12.189703804004074
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "marker-color": "7a0909",
-        "marker-size": "small",
-        "marker-symbol": "airport",
-        "name": "Rio de Janeiro"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -42.38525390625,
-          -22.309425841200177
-        ]
-      }
-    },
-    {
-      "type": "Feature",
-      "properties": {
-        "marker-color": "7a0909",
-        "marker-size": "small",
-        "marker-symbol": "airport",
-        "name": "California"
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -119.70703125,
-          36.73888412439431
+          -117.227524,
+          32.767406
         ]
       }
     }
