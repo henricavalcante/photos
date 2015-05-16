@@ -136,10 +136,11 @@ window.onload = function(){
 	  	addImagesFromInstagramJsonToMap(collection, instagramjson, map);
 		});
 
-		map.on('move', function(e) {
+		var onMapMove = function(e) {
 			var layers = e.target._layers;
 			showExistingPhotos(collection, map, layers);
-		});
+		}
+		map.on('move', _.debounce(onMapMove,300));
 	});
 };
 
